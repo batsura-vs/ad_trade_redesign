@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "646778660649",
+    "project_id": "adtrade-16e54",
+    "storage_bucket": "adtrade-16e54.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:646778660649:android:cf452baaa6a0e5f2403938",
+        "android_client_info": {
+          "package_name": "com.voven4ek.adtrade"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "646778660649-2r6t9d76r73cvk7ul3uj73j9g0mqd7b0.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCmthlpf3Z3TKm9D-yTg_Rx87aUEEfyfzQ"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "646778660649-2r6t9d76r73cvk7ul3uj73j9g0mqd7b0.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
