@@ -1,9 +1,25 @@
-import 'package:ad_trade_redesing/home/home_screen.dart';
+import 'dart:io';
 import 'package:ad_trade_redesing/login/login_screen.dart';
 import 'package:flutter/material.dart';
 
 void main() {
+  HttpOverrides.global = new DevHttpOverrides();
   runApp(MyApp());
+}
+
+class DevHttpOverrides extends HttpOverrides {
+  @override
+  HttpClient createHttpClient(SecurityContext? context) {
+    return super.createHttpClient(context)
+      ..badCertificateCallback = (X509Certificate cert, String host, int port) {
+        print(host);
+        if (host.isNotEmpty && host == 'compensator.keenetic.pro') {
+          return true;
+        } else {
+          return false;
+        }
+      };
+  }
 }
 
 class MyApp extends StatelessWidget {

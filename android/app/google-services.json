@@ -14,6 +14,30 @@
       },
       "oauth_client": [
         {
+          "client_id": "646778660649-fjh6kr0h2nh326kt76tuf4d23c8d1k2n.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.voven4ek.adtrade",
+            "certificate_hash": "7d2cdd53966c8cdba9737aff23a7d6343b51f4a3"
+          }
+        },
+        {
+          "client_id": "646778660649-q3o5h5vb48uukjq73f7ci63qfs5l2cmn.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.voven4ek.adtrade",
+            "certificate_hash": "5826e09f315e1c8bc92a5e3d4421cb981dbf10b2"
+          }
+        },
+        {
+          "client_id": "646778660649-t366dr3jbtnf51bbk6fen121vpkkv60k.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.voven4ek.adtrade",
+            "certificate_hash": "86c1901372cf6fa5b8f48f4a9ddf2cdf38e17a6b"
+          }
+        },
+        {
           "client_id": "646778660649-2r6t9d76r73cvk7ul3uj73j9g0mqd7b0.apps.googleusercontent.com",
           "client_type": 3
         }
@@ -32,7 +56,8 @@
             }
           ]
         }
-      }
+      },
+      "admob_app_id": "ca-app-pub-4344645794920651~3411205431"
     }
   ],
   "configuration_version": "1"

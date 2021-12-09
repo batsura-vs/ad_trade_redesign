@@ -1,6 +1,8 @@
 import 'package:ad_trade_redesing/data/bottom_navbar_helper.dart';
+import 'package:ad_trade_redesing/data/config.dart';
 import 'package:ad_trade_redesing/home/earn/earn_screen.dart';
 import 'package:ad_trade_redesing/home/home_screen_logic.dart';
+import 'package:ad_trade_redesing/home/news/news_screen.dart';
 import 'package:ad_trade_redesing/home/settings/settings_screen.dart';
 import 'package:ad_trade_redesing/home/shop/shop_screen.dart';
 import 'package:ad_trade_redesing/style/colors.dart';
@@ -22,21 +24,24 @@ class _HomeScreenState extends HomeScreenLogic {
     List<BottomNavBarHelper> bottomNavigationBarItems = [
       BottomNavBarHelper(
         icon: Icons.shopping_cart,
-        label: 'cart',
+        label: remoteConfig.getString('shop'),
         page: ShopScreen(
           widget.userInfo,
         ),
       ),
       BottomNavBarHelper(
         icon: Icons.attach_money,
-        label: 'earn',
-        page: SettingsScreen(
-          widget.userInfo,
-        ),
+        label: remoteConfig.getString('earn'),
+        page: EarnScreen(),
+      ),
+      BottomNavBarHelper(
+        icon: Icons.new_releases_sharp,
+        label: remoteConfig.getString('news'),
+        page: NewsScreen(),
       ),
       BottomNavBarHelper(
         icon: Icons.settings,
-        label: 'settings',
+        label: remoteConfig.getString('settings'),
         page: SettingsScreen(
           widget.userInfo,
         ),
@@ -45,18 +50,24 @@ class _HomeScreenState extends HomeScreenLogic {
     return Scaffold(
       backgroundColor: colorGray1,
       body: bottomNavigationBarItems[itemNow].page,
-      bottomNavigationBar: BottomNavigationBar(
-        currentIndex: itemNow,
-        backgroundColor: colorGray2,
-        onTap: (i) {
-          setState(() {
-            itemNow = i;
-          });
-        },
-        items: [
-          for (var i in bottomNavigationBarItems)
-            BottomNavigationBarItem(icon: Icon(i.icon), label: i.label)
-        ],
+      bottomNavigationBar: Theme(
+        data: Theme.of(context).copyWith(
+          // sets the background color of the `BottomNavigationBar`
+          canvasColor: colorGray2,
+        ),
+        child: BottomNavigationBar(
+          currentIndex: itemNow,
+          backgroundColor: colorGray2,
+          onTap: (i) {
+            setState(() {
+              itemNow = i;
+            });
+          },
+          items: [
+            for (var i in bottomNavigationBarItems)
+              BottomNavigationBarItem(icon: Icon(i.icon), label: i.label)
+          ],
+        ),
       ),
     );
   }

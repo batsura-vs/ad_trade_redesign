@@ -1,9 +1,14 @@
+import 'package:ad_trade_redesing/data/config.dart';
 import 'package:ad_trade_redesing/style/colors.dart';
 import 'package:ad_trade_redesing/style/fonts.dart';
 import 'package:flutter/material.dart';
 
+import 'modal.dart';
+
 class LoginButton extends StatelessWidget {
   final onClick;
+  late String text;
+
   LoginButton({this.onClick});
 
   @override
@@ -21,7 +26,7 @@ class LoginButton extends StatelessWidget {
             Expanded(
               flex: 2,
               child: Text(
-                'Sign In with Google',
+                null == remoteConfig ? "Loading" : remoteConfig.getString('login_button_text').toString(),
                 style: fontLoginText,
               ),
             )

@@ -1,3 +1,4 @@
+import 'package:ad_trade_redesing/data/config.dart';
 import 'package:ad_trade_redesing/home/settings/settings_screen_logic.dart';
 import 'package:ad_trade_redesing/style/colors.dart';
 import 'package:ad_trade_redesing/style/fonts.dart';
@@ -44,7 +45,7 @@ class _SettingsScreenState extends SettingsScreenLogic {
                           color: colorText,
                         ),
                         Text(
-                          'Logout',
+                          remoteConfig.getString('logout'),
                           style: fontLoginText.copyWith(fontSize: 15),
                         )
                       ],
@@ -93,7 +94,7 @@ class _SettingsScreenState extends SettingsScreenLogic {
                           Visibility(
                             visible: !loading,
                             child: Text(
-                              'Balance: $balance',
+                              '${remoteConfig.getString('balance')}: $balance',
                               style: fontLoginText,
                             ),
                           ),
@@ -108,27 +109,24 @@ class _SettingsScreenState extends SettingsScreenLogic {
                 ),
               ),
               MyCard(
-                child: Row(
+                child: Column(
                   children: [
-                    Expanded(
-                      flex: 4,
-                      child: TextField(
-                        controller: controller,
-                        style: fontLoginText.copyWith(fontSize: 13),
-                        decoration: InputDecoration(
-                          border: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(20),
-                          ),
-                          labelText: 'Steam trade url:',
+                    TextField(
+                      controller: controller,
+                      style: fontLoginText.copyWith(fontSize: 13, color: Colors.white),
+                      decoration: InputDecoration(
+                        border: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(10),
                         ),
+                        labelText: remoteConfig.getString('steam_trade_url'),
+                        labelStyle: fontAppName.copyWith(fontSize: 17)
                       ),
                     ),
-                    Expanded(
-                      child: Column(
-                        mainAxisAlignment: MainAxisAlignment.spaceAround,
+                    Visibility(
+                      visible: !loading,
+                      child: Row(
                         children: [
-                          Visibility(
-                            visible: !loading,
+                          Expanded(
                             child: GestureDetector(
                               onTap: () {
                                 setState(() {
@@ -136,51 +134,50 @@ class _SettingsScreenState extends SettingsScreenLogic {
                                 });
                               },
                               child: Container(
+                                padding: EdgeInsets.all(5),
+                                margin: EdgeInsets.all(3),
                                 decoration: BoxDecoration(
-                                  borderRadius: BorderRadius.only(
-                                      topLeft: Radius.circular(5),
-                                      topRight: Radius.circular(5)),
+                                  borderRadius: BorderRadius.circular(5),
                                   color: Colors.red,
                                 ),
                                 child: Center(
                                   child: Text(
-                                    'Clear',
+                                    remoteConfig.getString('clear_button'),
                                     style: fontLoginText,
                                   ),
                                 ),
                               ),
                             ),
                           ),
-                          Visibility(
-                            visible: !loading,
+                          Expanded(
                             child: GestureDetector(
                               onTap: changeTradeUrl,
                               child: Container(
+                                padding: EdgeInsets.all(5),
+                                margin: EdgeInsets.all(3),
                                 decoration: BoxDecoration(
-                                  borderRadius: BorderRadius.only(
-                                      bottomLeft: Radius.circular(5),
-                                      bottomRight: Radius.circular(5)),
+                                  borderRadius: BorderRadius.circular(5),
                                   color: Colors.green,
                                 ),
                                 child: Center(
                                   child: Text(
-                                    'Save',
+                                    remoteConfig.getString('save_button'),
                                     style: fontLoginText,
                                   ),
                                 ),
                               ),
                             ),
                           ),
-                          Visibility(
-                            visible: loading,
-                            child: CircularProgressIndicator(),
-                          )
                         ],
                       ),
-                    )
+                    ),
+                    Visibility(
+                      visible: loading,
+                      child: CircularProgressIndicator(),
+                    ),
                   ],
                 ),
-              )
+              ),
             ],
           )
         ],

@@ -1,5 +1,7 @@
 import 'dart:convert';
-
+import 'package:ad_trade_redesing/data/config.dart';
+import 'package:ad_trade_redesing/home/skin_page/skin_page.dart';
+import 'package:flutter_web_browser/flutter_web_browser.dart';
 import 'package:ad_trade_redesing/home/shop/shop_screen.dart';
 import 'package:ad_trade_redesing/login/login_screen.dart';
 import 'package:ad_trade_redesing/style/colors.dart';
@@ -10,6 +12,7 @@ import 'package:http/http.dart' as http;
 class ShopScreenLogic extends State<ShopScreen> {
   bool loading = true;
   List items = [];
+  dynamic balance;
 
   @override
   void initState() {
@@ -17,46 +20,51 @@ class ShopScreenLogic extends State<ShopScreen> {
     loadShop();
   }
 
-  card(id, cost, name, color) {
-    return Container(
-      height: MediaQuery.of(context).size.width / 3.5,
-      width: MediaQuery.of(context).size.width / 3.5,
-      margin: EdgeInsets.all(5),
-      decoration: BoxDecoration(
-          color: colorBlue,
-          border: Border.all(color: Colors.black),
-          image: DecorationImage(
-              image: NetworkImage(
-                  'https://community.cloudflare.steamstatic.com/economy/image/$id/330x192'))),
-      child: Column(
-        children: [
-          Row(
-            mainAxisAlignment: MainAxisAlignment.end,
-            children: [
-              Text(cost.toString(), style: fontLoginText.copyWith(fontSize: 12))
-            ],
-          ),
-          Expanded(
-            child: Column(
+  card(id, cost, name, color, d3, des, hash) {
+    return GestureDetector(
+      onTap: () {
+        Navigator.push(context, MaterialPageRoute(builder: (context) => SkinPage(id, cost, name, color, d3, des, hash, widget.user)));
+      },
+      child: Container(
+        height: MediaQuery.of(context).size.width / 3.2,
+        width: MediaQuery.of(context).size.width / 3.2,
+        margin: EdgeInsets.all(3),
+        decoration: BoxDecoration(
+            color: colorBlue,
+            border: Border.all(color: Colors.black),
+            image: DecorationImage(
+                image: NetworkImage(
+                    'https://community.cloudflare.steamstatic.com/economy/image/$id/330x192'))),
+        child: Column(
+          children: [
+            Row(
               mainAxisAlignment: MainAxisAlignment.end,
               children: [
-                Text(
-                  name,
-                  style: fontLoginText.copyWith(
-                      fontSize: 12, color: Color(int.parse('0xff$color'))),
-                  textAlign: TextAlign.center,
-                ),
+                Text(cost.toString(), style: fontLoginText.copyWith(fontSize: 12))
               ],
             ),
-          )
-        ],
+            Expanded(
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.end,
+                children: [
+                  Text(
+                    name,
+                    style: fontLoginText.copyWith(
+                        fontSize: 12, color: Color(int.parse('0xff$color'))),
+                    textAlign: TextAlign.center,
+                  ),
+                ],
+              ),
+            )
+          ],
+        ),
       ),
     );
   }
 
   checkToken() async {
     var data = await http.post(
-        Uri.parse('http://192.168.1.148:4999/check_token'),
+        Uri.parse('${remoteConfig.getString("serverUrl")}/check_token'),
         body: jsonEncode({'token': widget.user.tokenId}));
     if (data.statusCode != 200) {
       Navigator.of(context).pushAndRemoveUntil(
@@ -82,7 +90,7 @@ class ShopScreenLogic extends State<ShopScreen> {
   loadShop() async {
     var res = await checkToken();
     if (res) {
-      var data = await http.post(Uri.parse('http://192.168.1.148:4999/skins'),
+      var data = await http.post(Uri.parse('${remoteConfig.getString("serverUrl")}/skins'),
           body: jsonEncode({'token': widget.user.tokenId}));
       if (data.statusCode == 200) {
         var js = jsonDecode(data.body);
@@ -90,7 +98,7 @@ class ShopScreenLogic extends State<ShopScreen> {
         for (var i in js) {
           if (i['cost'] == null) {
             var cost = await http.get(Uri.parse(
-                'http://192.168.1.148:4999/get_cost?name=${i['hash_name']}'));
+                '${remoteConfig.getString("serverUrl")}/get_cost?name=${i['hash_name']}'));
             if (cost.statusCode == 200) {
               var j = jsonDecode(cost.body);
               if (j['success']) {
@@ -98,25 +106,21 @@ class ShopScreenLogic extends State<ShopScreen> {
               }
             }
           }
-          skins.add(card(i['id'], i['cost'], i['name'], i['color']));
+          skins.add(card(i['id'], i['cost'], i['name'], i['color'], i['3d'], i['description'], i['hash_name']));
         }
-        var row = [];
-        int x = 0;
         for (var i in skins) {
-          if (x < 3) {
-            row.add(i);
-            x++;
-          } else {
-            items.add(
-              Row(
-                children: [for (var i in row) i],
-                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-              ),
-            );
-            x = 0;
-            row = [];
-          }
+          items.add(i);
         }
+      }
+      var res = await checkToken();
+      if (res) {
+        var data = await http.post(
+            Uri.parse('${remoteConfig.getString("serverUrl")}/get_my_info'),
+            body: jsonEncode({'token': widget.user.tokenId}));
+        var js = jsonDecode(data.body);
+        setState(() {
+          balance = js['balance'];
+        });
       }
       setState(() {
         loading = false;

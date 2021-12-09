@@ -1,5 +1,6 @@
 import 'dart:convert';
 
+import 'package:ad_trade_redesing/data/config.dart';
 import 'package:ad_trade_redesing/home/settings/settings_screen.dart';
 import 'package:ad_trade_redesing/login/login_screen.dart';
 import 'package:ad_trade_redesing/style/fonts.dart';
@@ -36,7 +37,7 @@ class SettingsScreenLogic extends State<SettingsScreen> {
   checkToken() async {
     ScaffoldMessenger.of(context).clearSnackBars();
     var data = await http.post(
-        Uri.parse('http://192.168.1.148:4999/check_token'),
+        Uri.parse('${remoteConfig.getString("serverUrl")}/check_token'),
         body: jsonEncode({'token': widget.user.tokenId}));
     if (data.statusCode != 200) {
       Navigator.of(context).pushAndRemoveUntil(
@@ -63,7 +64,7 @@ class SettingsScreenLogic extends State<SettingsScreen> {
     var res = await checkToken();
     if (res) {
       var data = await http.post(
-          Uri.parse('http://192.168.1.148:4999/get_my_info'),
+          Uri.parse('${remoteConfig.getString("serverUrl")}/get_my_info'),
           body: jsonEncode({'token': widget.user.tokenId}));
       var js = jsonDecode(data.body);
       setState(() {
@@ -82,7 +83,7 @@ class SettingsScreenLogic extends State<SettingsScreen> {
         loading = true;
       });
       var data = await http.post(
-          Uri.parse('http://192.168.1.148:4999/change_trade_url'),
+          Uri.parse('${remoteConfig.getString("serverUrl")}/change_trade_url'),
           body: jsonEncode(
               {'token': widget.user.tokenId, 'trade_url': controller.text}));
       if (data.statusCode == 200 && jsonDecode(data.body)['success']) {
