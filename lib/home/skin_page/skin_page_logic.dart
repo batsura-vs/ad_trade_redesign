@@ -39,7 +39,7 @@ class SkinPageLogic extends State<SkinPage> {
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
           content: Text(
-            'Success, check your steam. If you can`t find trade offer please wait 5 minutes or write to the technical support :)',
+            data.body,
             style: fontLoginText.copyWith(fontWeight: FontWeight.w600),
           ),
           backgroundColor: Colors.green,

@@ -56,8 +56,8 @@ class LoginScreenLogic extends State<LoginScreen> {
       'd3': 'View 3d',
       'buy': 'Buy',
       'google_ads': 'Google Ads',
-      'cash_out_waiting': 'Please wait when we are send skin to you :)',
-      'serverUrl': 'http://192.168.1.148:5001',
+      'cash_out_waiting': 'Please wait...',
+      'serverUrl': 'https://compensator.keenetic.pro:444/',
     });
     await remoteConfig.fetchAndActivate();
     setState(() {});
