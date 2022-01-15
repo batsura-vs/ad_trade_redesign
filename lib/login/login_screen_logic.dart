@@ -13,6 +13,7 @@ import 'package:google_sign_in/google_sign_in.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 import 'package:firebase_core/firebase_core.dart';
+import 'dart:convert';
 
 late AndroidNotificationChannel channel;
 
@@ -47,7 +48,7 @@ class LoginScreenLogic extends State<LoginScreen> {
       'balance': 'Balance',
       'shop': 'Shop',
       'earn': 'Earn',
-      'news': 'News',
+      'support': 'Support',
       'settings': 'Settings',
       'clear_button': 'Clear',
       'save_button': 'Save',
@@ -58,6 +59,8 @@ class LoginScreenLogic extends State<LoginScreen> {
       'google_ads': 'Google Ads',
       'cash_out_waiting': 'Please wait...',
       'serverUrl': 'https://compensator.keenetic.pro:444/',
+      'httpServerUrl': 'http://compensator.keenetic.pro:445/',
+      'close_chat': 'Close',
     });
     await remoteConfig.fetchAndActivate();
     setState(() {});
@@ -93,6 +96,7 @@ class LoginScreenLogic extends State<LoginScreen> {
             ));
       }
     });
+    login();
   }
 
   login() async {
@@ -104,10 +108,10 @@ class LoginScreenLogic extends State<LoginScreen> {
       GoogleSignInAuthentication googleSignInAuth =
           await googleSignInAccount!.authentication;
       print(googleSignInAuth.idToken);
-      var data = await http
-          .get(Uri.parse('${remoteConfig.getString("serverUrl")}/login/${googleSignInAuth.idToken}'));
+      var data = await http.get(Uri.parse(
+          '${remoteConfig.getString("serverUrl")}/login/${googleSignInAuth.idToken}'));
       ScaffoldMessenger.of(context).clearSnackBars();
-      print(data.statusCode);
+      print(data.body);
       if (data.statusCode == 200) {
         var json = jsonDecode(data.body);
         if (json['success']) {
@@ -122,6 +126,10 @@ class LoginScreenLogic extends State<LoginScreen> {
           Navigator.of(context).pushAndRemoveUntil(
               MaterialPageRoute(builder: (context) => HomeScreen(info)),
               (Route<dynamic> route) => false);
+          Codec<String, String> stringToBase64Url = utf8.fuse(base64Url);
+          String topic = stringToBase64Url.encode(info.gmail);
+          FirebaseMessaging.instance.deleteToken();
+          FirebaseMessaging.instance.subscribeToTopic(topic.substring(0, topic.length - 1));
         } else {
           ScaffoldMessenger.of(context).showSnackBar(
             SnackBar(
@@ -134,6 +142,7 @@ class LoginScreenLogic extends State<LoginScreen> {
           );
         }
       } else {
+        print(data.statusCode);
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
             content: Text(

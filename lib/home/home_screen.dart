@@ -1,5 +1,6 @@
 import 'package:ad_trade_redesing/data/bottom_navbar_helper.dart';
 import 'package:ad_trade_redesing/data/config.dart';
+import 'package:ad_trade_redesing/home/chat/chat_screen.dart';
 import 'package:ad_trade_redesing/home/earn/earn_screen.dart';
 import 'package:ad_trade_redesing/home/home_screen_logic.dart';
 import 'package:ad_trade_redesing/home/news/news_screen.dart';
@@ -35,9 +36,11 @@ class _HomeScreenState extends HomeScreenLogic {
         page: EarnScreen(),
       ),
       BottomNavBarHelper(
-        icon: Icons.new_releases_sharp,
-        label: remoteConfig.getString('news'),
-        page: NewsScreen(),
+        icon: Icons.support_agent,
+        label: remoteConfig.getString('support'),
+        page: ChatScreen(
+          user: widget.userInfo,
+        ),
       ),
       BottomNavBarHelper(
         icon: Icons.settings,
@@ -58,6 +61,7 @@ class _HomeScreenState extends HomeScreenLogic {
         child: BottomNavigationBar(
           currentIndex: itemNow,
           backgroundColor: colorGray2,
+          selectedItemColor: outlineBorderColor,
           onTap: (i) {
             setState(() {
               itemNow = i;

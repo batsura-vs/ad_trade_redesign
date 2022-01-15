@@ -13,6 +13,7 @@ class MyCard extends StatelessWidget {
       decoration: BoxDecoration(
         color: colorGray3,
         borderRadius: BorderRadius.circular(15),
+        border: Border.all(color: outlineBorderColor)
       ),
       child: child,
     );

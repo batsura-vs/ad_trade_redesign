@@ -2,6 +2,7 @@ import 'package:ad_trade_redesing/data/config.dart';
 import 'package:ad_trade_redesing/home/settings/settings_screen_logic.dart';
 import 'package:ad_trade_redesing/style/colors.dart';
 import 'package:ad_trade_redesing/style/fonts.dart';
+import 'package:ad_trade_redesing/widgets/button.dart';
 import 'package:ad_trade_redesing/widgets/my_card.dart';
 import 'package:flutter/material.dart';
 
@@ -31,27 +32,13 @@ class _SettingsScreenState extends SettingsScreenLogic {
                   'AdTrade',
                   style: fontAppName.copyWith(fontSize: 30),
                 ),
-                GestureDetector(
+                OutlineIconButton(
+                  color: outlineBorderColor,
                   onTap: logout,
-                  child: Container(
-                    padding: EdgeInsets.all(5),
-                    decoration: BoxDecoration(
-                        color: Colors.red.shade900,
-                        borderRadius: BorderRadius.circular(20)),
-                    child: Row(
-                      children: [
-                        Icon(
-                          Icons.logout,
-                          color: colorText,
-                        ),
-                        Text(
-                          remoteConfig.getString('logout'),
-                          style: fontLoginText.copyWith(fontSize: 15),
-                        )
-                      ],
-                    ),
-                  ),
-                )
+                  text: remoteConfig.getString('logout'),
+                  icon: Icons.logout,
+                  styleText: fontLoginText,
+                ),
               ],
             ),
           ),
@@ -113,59 +100,39 @@ class _SettingsScreenState extends SettingsScreenLogic {
                   children: [
                     TextField(
                       controller: controller,
-                      style: fontLoginText.copyWith(fontSize: 13, color: Colors.white),
+                      style: fontLoginText.copyWith(
+                          fontSize: 13, color: Colors.white),
                       decoration: InputDecoration(
-                        border: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(10),
-                        ),
-                        labelText: remoteConfig.getString('steam_trade_url'),
-                        labelStyle: fontAppName.copyWith(fontSize: 17)
-                      ),
+                          border: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(10),
+                          ),
+                          labelText: remoteConfig.getString('steam_trade_url'),
+                          labelStyle: fontAppName.copyWith(fontSize: 17)),
                     ),
                     Visibility(
                       visible: !loading,
                       child: Row(
                         children: [
                           Expanded(
-                            child: GestureDetector(
+                            child: OutlineIconButton(
+                              color: outlineBorderColor,
                               onTap: () {
                                 setState(() {
                                   controller.clear();
                                 });
                               },
-                              child: Container(
-                                padding: EdgeInsets.all(5),
-                                margin: EdgeInsets.all(3),
-                                decoration: BoxDecoration(
-                                  borderRadius: BorderRadius.circular(5),
-                                  color: Colors.red,
-                                ),
-                                child: Center(
-                                  child: Text(
-                                    remoteConfig.getString('clear_button'),
-                                    style: fontLoginText,
-                                  ),
-                                ),
-                              ),
+                              text: remoteConfig.getString('clear_button'),
+                              icon: Icons.cleaning_services_rounded,
+                              styleText: fontLoginText,
                             ),
                           ),
                           Expanded(
-                            child: GestureDetector(
+                            child: OutlineIconButton(
+                              color: outlineBorderColor,
                               onTap: changeTradeUrl,
-                              child: Container(
-                                padding: EdgeInsets.all(5),
-                                margin: EdgeInsets.all(3),
-                                decoration: BoxDecoration(
-                                  borderRadius: BorderRadius.circular(5),
-                                  color: Colors.green,
-                                ),
-                                child: Center(
-                                  child: Text(
-                                    remoteConfig.getString('save_button'),
-                                    style: fontLoginText,
-                                  ),
-                                ),
-                              ),
+                              text: remoteConfig.getString('save_button'),
+                              icon: Icons.save,
+                              styleText: fontLoginText,
                             ),
                           ),
                         ],

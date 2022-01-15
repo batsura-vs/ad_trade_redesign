@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'package:ad_trade_redesing/data/config.dart';
 import 'package:ad_trade_redesing/home/skin_page/skin_page.dart';
+import 'package:ad_trade_redesing/widgets/itemCard.dart';
 import 'package:flutter_web_browser/flutter_web_browser.dart';
 import 'package:ad_trade_redesing/home/shop/shop_screen.dart';
 import 'package:ad_trade_redesing/login/login_screen.dart';
@@ -23,11 +24,17 @@ class ShopScreenLogic extends State<ShopScreen> {
   card(id, cost, name, color, d3, des, hash) {
     return GestureDetector(
       onTap: () {
-        Navigator.push(context, MaterialPageRoute(builder: (context) => SkinPage(id, cost, name, color, d3, des, hash, widget.user)));
+
       },
       child: Container(
-        height: MediaQuery.of(context).size.width / 3.2,
-        width: MediaQuery.of(context).size.width / 3.2,
+        height: MediaQuery
+            .of(context)
+            .size
+            .width / 3.2,
+        width: MediaQuery
+            .of(context)
+            .size
+            .width / 3.2,
         margin: EdgeInsets.all(3),
         decoration: BoxDecoration(
             color: colorBlue,
@@ -40,7 +47,8 @@ class ShopScreenLogic extends State<ShopScreen> {
             Row(
               mainAxisAlignment: MainAxisAlignment.end,
               children: [
-                Text(cost.toString(), style: fontLoginText.copyWith(fontSize: 12))
+                Text(cost.toString(),
+                    style: fontLoginText.copyWith(fontSize: 12))
               ],
             ),
             Expanded(
@@ -69,10 +77,11 @@ class ShopScreenLogic extends State<ShopScreen> {
     if (data.statusCode != 200) {
       Navigator.of(context).pushAndRemoveUntil(
           MaterialPageRoute(
-              builder: (context) => LoginScreen(
+              builder: (context) =>
+                  LoginScreen(
                     title: 'AdTrade',
                   )),
-          (Route<dynamic> route) => false);
+              (Route<dynamic> route) => false);
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
           content: Text(
@@ -90,7 +99,8 @@ class ShopScreenLogic extends State<ShopScreen> {
   loadShop() async {
     var res = await checkToken();
     if (res) {
-      var data = await http.post(Uri.parse('${remoteConfig.getString("serverUrl")}/skins'),
+      var data = await http.post(
+          Uri.parse('${remoteConfig.getString("serverUrl")}/skins'),
           body: jsonEncode({'token': widget.user.tokenId}));
       if (data.statusCode == 200) {
         var js = jsonDecode(data.body);
@@ -98,7 +108,8 @@ class ShopScreenLogic extends State<ShopScreen> {
         for (var i in js) {
           if (i['cost'] == null) {
             var cost = await http.get(Uri.parse(
-                '${remoteConfig.getString("serverUrl")}/get_cost?name=${i['hash_name']}'));
+                '${remoteConfig.getString(
+                    "serverUrl")}/get_cost?name=${i['hash_name']}'));
             if (cost.statusCode == 200) {
               var j = jsonDecode(cost.body);
               if (j['success']) {
@@ -106,7 +117,17 @@ class ShopScreenLogic extends State<ShopScreen> {
               }
             }
           }
-          skins.add(card(i['id'], i['cost'], i['name'], i['color'], i['3d'], i['description'], i['hash_name']));
+          skins.add(ItemCard(
+            id: i['id'],
+            cost: i['cost'],
+            name: i['name'],
+            color: i['color'],
+            d3: i['3d'],
+            des: i['description'],
+            hash: i['hash_name'],
+            user: widget.user,
+            ),
+          );
         }
         for (var i in skins) {
           items.add(i);
