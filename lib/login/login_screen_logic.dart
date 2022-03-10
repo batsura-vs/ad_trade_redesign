@@ -107,7 +107,7 @@ class LoginScreenLogic extends State<LoginScreen> {
       var googleSignInAccount = await _googleSignIn.signIn();
       GoogleSignInAuthentication googleSignInAuth =
           await googleSignInAccount!.authentication;
-      print(googleSignInAuth.idToken);
+      print(googleSignInAuth.idToken.toString());
       var data = await http.get(Uri.parse(
           '${remoteConfig.getString("serverUrl")}/login/${googleSignInAuth.idToken}'));
       ScaffoldMessenger.of(context).clearSnackBars();

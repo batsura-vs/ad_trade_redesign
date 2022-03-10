@@ -71,7 +71,7 @@ class _ChatPageState extends State<ChatScreen> {
       wait = true;
     });
     final response = await http.post(
-        Uri.parse('${remoteConfig.getString("serverUrl")}/chat'),
+        Uri.parse('${remoteConfig.getString("httpServerUrl")}/chat'),
         body: jsonEncode({'token': widget.user.tokenId}));
     dynamic js = jsonDecode(response.body);
     final messages;
@@ -120,7 +120,7 @@ class _ChatPageState extends State<ChatScreen> {
   void _loadMessages() async {
     print(remoteConfig.getString("serverUrl"));
     final response = await http.post(
-        Uri.parse('${remoteConfig.getString("serverUrl")}/chat'),
+        Uri.parse('${remoteConfig.getString("httpServerUrl")}/chat'),
         body: jsonEncode({'token': widget.user.tokenId}));
     dynamic js = jsonDecode(response.body);
     final messages;
@@ -214,7 +214,7 @@ class _ChatPageState extends State<ChatScreen> {
             onTap: () {
               http.post(
                   Uri.parse(
-                      '${remoteConfig.getString("serverUrl")}/close_ticket/$chatNow'),
+                      '${remoteConfig.getString("httpServerUrl")}/close_ticket/$chatNow'),
                   body: jsonEncode({'token': widget.user.tokenId}));
               setState(() {
                 _messages = [];
