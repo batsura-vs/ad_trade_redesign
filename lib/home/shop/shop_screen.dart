@@ -30,14 +30,14 @@ class _ShopScreenState extends ShopScreenLogic {
                       children: [
                         Icon(
                           Icons.store,
-                          color: Colors.deepPurple,
+                          color: labelColor,
                           size: 50,
                         ),
                         Text(
                           remoteConfig.getString('shop'),
                           style: TextStyle(
                             fontSize: 30,
-                            color: Colors.deepPurple,
+                            color: labelColor,
                             fontWeight: FontWeight.w600,
                           ),
                         ),
@@ -46,25 +46,24 @@ class _ShopScreenState extends ShopScreenLogic {
                   ),
                   Visibility(
                     visible: !loading,
-                    child: Row(
-                      children: [
-                        Text(
-                          "${remoteConfig.getString('balance')}:",
-                          style: TextStyle(
-                            fontSize: 30,
-                            color: Colors.deepPurple,
-                            fontWeight: FontWeight.w600,
+                    child: MyCard(
+                      child: Row(
+                        children: [
+                          Text(
+                            balance.toString(),
+                            style: TextStyle(
+                              fontSize: 30,
+                              color: labelColor,
+                              fontWeight: FontWeight.w600,
+                            ),
                           ),
-                        ),
-                        Text(
-                          balance.toString(),
-                          style: TextStyle(
-                            fontSize: 30,
-                            color: Colors.deepPurple,
-                            fontWeight: FontWeight.w600,
+                          Icon(
+                            Icons.account_balance_wallet,
+                            size: 30  ,
+                            color: labelColor,
                           ),
-                        )
-                      ],
+                        ],
+                      ),
                     ),
                   ),
                 ],

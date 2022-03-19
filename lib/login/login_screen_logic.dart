@@ -8,6 +8,7 @@ import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:firebase_remote_config/firebase_remote_config.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
+import '../globals.dart';
 import 'login_screen.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:http/http.dart' as http;
@@ -38,30 +39,7 @@ class LoginScreenLogic extends State<LoginScreen> {
       fetchTimeout: const Duration(seconds: 10),
       minimumFetchInterval: const Duration(hours: 1),
     ));
-    await remoteConfig.setDefaults(<String, dynamic>{
-      'colorGray1': '0xff2B2932',
-      'colorGray2': '0xff373440',
-      'colorGray3': '0xff433F4E',
-      'colorText': '0xffececee',
-      'colorBlue': '0xff465166',
-      'login_button_text': 'Sign In with Google',
-      'balance': 'Balance',
-      'shop': 'Shop',
-      'earn': 'Earn',
-      'support': 'Support',
-      'settings': 'Settings',
-      'clear_button': 'Clear',
-      'save_button': 'Save',
-      'steam_trade_url': 'Steam trade url',
-      'logout': 'Logout',
-      'd3': 'View 3d',
-      'buy': 'Buy',
-      'google_ads': 'Google Ads',
-      'cash_out_waiting': 'Please wait...',
-      'serverUrl': 'https://compensator.keenetic.pro:444/',
-      'httpServerUrl': 'http://compensator.keenetic.pro:445/',
-      'close_chat': 'Close',
-    });
+    await remoteConfig.setDefaults(remoteConfigSettings);
     await remoteConfig.fetchAndActivate();
     setState(() {});
     channel = const AndroidNotificationChannel(
@@ -107,7 +85,7 @@ class LoginScreenLogic extends State<LoginScreen> {
       var googleSignInAccount = await _googleSignIn.signIn();
       GoogleSignInAuthentication googleSignInAuth =
           await googleSignInAccount!.authentication;
-      print(googleSignInAuth.idToken.toString());
+      print('${remoteConfig.getString("serverUrl")}/login/${googleSignInAuth.idToken}');
       var data = await http.get(Uri.parse(
           '${remoteConfig.getString("serverUrl")}/login/${googleSignInAuth.idToken}'));
       ScaffoldMessenger.of(context).clearSnackBars();
@@ -129,6 +107,7 @@ class LoginScreenLogic extends State<LoginScreen> {
           Codec<String, String> stringToBase64Url = utf8.fuse(base64Url);
           String topic = stringToBase64Url.encode(info.gmail);
           FirebaseMessaging.instance.deleteToken();
+          print(topic.substring(0, topic.length - 1));
           FirebaseMessaging.instance.subscribeToTopic(topic.substring(0, topic.length - 1));
         } else {
           ScaffoldMessenger.of(context).showSnackBar(

@@ -61,7 +61,8 @@ class _HomeScreenState extends HomeScreenLogic {
         child: BottomNavigationBar(
           currentIndex: itemNow,
           backgroundColor: colorGray2,
-          selectedItemColor: outlineBorderColor,
+          selectedItemColor: labelColor,
+          unselectedItemColor: Colors.grey,
           onTap: (i) {
             setState(() {
               itemNow = i;

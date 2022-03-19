@@ -40,17 +40,24 @@ class ItemCard extends StatelessWidget {
         );
       },
       child: Container(
-        padding: EdgeInsets.all(5),
-        margin: EdgeInsets.all(3),
-        height: MediaQuery.of(context).size.width / 3.2,
-        width: MediaQuery.of(context).size.width / 3.2,
+        margin: EdgeInsets.all(7),
+        height: MediaQuery.of(context).size.width / 3.5,
+        width: MediaQuery.of(context).size.width / 3.5,
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(5),
           border: Border.all(color: outlineBorderColor),
+          // boxShadow: [
+          //   BoxShadow(
+          //     color: Colors.black.withOpacity(0.1),
+          //     spreadRadius: 3,
+          //     blurRadius: 2, // changes position of shadow
+          //   ),
+          // ],
           image: DecorationImage(
             image: NetworkImage(
                 'https://community.cloudflare.steamstatic.com/economy/image/$id/330x192'),
           ),
+          // color: colorGray1.withOpacity(0.12),
         ),
         child: Column(
           children: [

@@ -13,8 +13,16 @@ class MyCard extends StatelessWidget {
       decoration: BoxDecoration(
         color: colorGray3,
         borderRadius: BorderRadius.circular(15),
-        border: Border.all(color: outlineBorderColor)
+        border: Border.all(color: outlineBorderColor),
+        boxShadow: [
+          BoxShadow(
+            color: colorGray3.withOpacity(0.5),
+            spreadRadius: 5,
+            blurRadius: 7, // changes position of shadow
+          ),
+        ],
       ),
+
       child: child,
     );
   }
